@@ -2,11 +2,10 @@ package ua.kpi.pti.fp.l1
 
 import org.scalacheck.Prop
 
-
 case class Assignee(
-    fullName: String,
-                     props: List[Prop] = List(Prop.falsified)
-                   )
+  fullName: String,
+  props: List[Prop] = List(Prop.falsified),
+)
 
 object Assignee {
   val all = List(

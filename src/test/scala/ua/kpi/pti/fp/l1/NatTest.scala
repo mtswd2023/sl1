@@ -6,7 +6,5 @@ import org.scalacheck.Prop._
 import ua.kpi.pti.fp.l1.Nat._
 
 class NatTest extends ScalaCheckSuite {
-  property("fromInt->toInt roundtrip") {
-
-  }
+  property("fromInt->toInt roundtrip") {}
 }

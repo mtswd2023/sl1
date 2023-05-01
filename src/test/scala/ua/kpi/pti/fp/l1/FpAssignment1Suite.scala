@@ -5,7 +5,5 @@ import munit.ScalaCheckSuite
 import org.scalacheck.Prop._
 
 class FpAssignment1Suite extends ScalaCheckSuite {
-  property() {
-
-  }
+  property() {}
 }
