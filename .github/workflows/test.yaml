@@ -4,6 +4,9 @@ on:
   push:
     branches: [ main ]
 
+permissions:
+  test: write
+
 concurrency:
   group: "${{ github.workflow }}-${{ github.ref }}"
   cancel-in-progress: true
