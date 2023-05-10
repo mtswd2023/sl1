@@ -9,8 +9,8 @@ sealed trait Nat {
     curr: Int,
   ): Int = {
     n match {
-      case Nat.Zero => curr
-      case Nat.Succ(k) => toIntAcc(k, curr + 1)
+      case _: Nat.Zero.type => curr
+      case s: Nat.Succ => toIntAcc(s.n, curr + 1)
     }
   }
 
@@ -51,9 +51,19 @@ sealed trait Nat {
 
     rec(this, that)
   }
+
+  override def toString(): String = s"${toInt()}"
+
+  override def hashCode(): Int = toInt().hashCode()
+
+  override def equals(obj: Any): Boolean = obj match {
+    case n: Nat => toInt() == n.toInt()
+    case _ => false
+  }
 }
 
-case object Nat {
+object Nat {
+
   case object Zero extends Nat
 
   case class Succ(n: Nat) extends Nat
@@ -75,9 +85,22 @@ case object Nat {
   def fromInt(i: Int): Option[Nat] = {
     fromIntAcc(i, Zero)
   }
-}
 
-forAll(Gen.choose(Int.MinValue, 1_000_000)) { (n: Int) =>
-  val maybeInt: Option[Int] = fromInt(n).map(_.toInt())
-  (n < 0 && maybeInt.isEmpty) || (n >= 0 && maybeInt.contains(n))
+  def fromIntUnsafe(i: Int): Nat = {
+    require(i >= 0)
+
+    @tailrec
+    def fromIntAcc(
+      i: Int,
+      curr: Nat,
+    ): Nat = {
+      if (i == 0) {
+        curr
+      } else {
+        fromIntAcc(i - 1, Nat.Succ(curr))
+      }
+    }
+
+    fromIntAcc(i, Zero)
+  }
 }

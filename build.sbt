@@ -7,5 +7,5 @@ lazy val root = (project in file("."))
     name := "l1",
   )
 
-libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.17.0"
+libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.17.0" % Test
 libraryDependencies += "org.scalameta" %% "munit-scalacheck" % "0.7.29" % Test
