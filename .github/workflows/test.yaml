@@ -1,0 +1,26 @@
+name: Test
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      JDK_JAVA_OPTIONS: -Dfile.encoding=UTF-8 -Duser.timezone=UTC
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 20
+      - name: Build and Test
+        run: sbt -v +test
