@@ -5,7 +5,6 @@ import org.scalacheck.Prop
 import ua.kpi.pti.fp.l1.assignment.Assignment
 import ua.kpi.pti.fp.l1.assignment.L1PropOrTest._
 
-
 class FpAssignment1Suite extends ScalaCheckSuite {
   Assignment.all.foreach { a =>
     a.props.foreach { case (name, prop) =>
