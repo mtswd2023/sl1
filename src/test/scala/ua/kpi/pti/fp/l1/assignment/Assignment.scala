@@ -335,6 +335,11 @@ object Assignment {
       // that takes a current board and returns the next one
       // you can skip writing property-based tests but still write normal tests
       // (use Glider as a sample shape)
+      // please also write a function to render a board.
+      // use ascii/unicode for black/white squares, e.g.
+      // "\u2B1B" (⬛)
+      // and
+      // "\u2B1C" (⬜) (or maybe just a space (" " or "\u0020"))
     },
     new Assignment {
       override def assigneeFullName: String = "Пацьора Поліна Олегівна"
