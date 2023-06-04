@@ -22,5 +22,34 @@ object Monoid {
         override def empty: Set[A] = Set.empty[A]
         override def combine(x: Set[A], y: Set[A]): Set[A] = x ++ y
     }
-}    
+}
 
+
+trait Empty[F[_]]{
+    def get[A]: F[A]
+}
+trait Combine[F[_]]{
+    def combine[A](x:F[A], y:F[A]): F[A]
+}
+object Empty{   
+    implicit val listEmpty: Empty[List] = new Empty[List]{
+        def get[A]: List[A] = List.empty[A]
+    }
+    implicit val optionEmpty: Empty[Option] = new Empty[Option]{
+        def get[A]: Option[A] = None
+    }
+    implicit val setEmpty: Empty[Set] = new Empty[Set]{
+        def get[A]: Set[A] = Set.empty[A]
+    }
+}
+object Combine{
+    implicit val listCombine: Combine[List] = new Combine[List]{
+        def combine[A](x: List[A], y: List[A]): List[A] = x ++ y
+    }
+    implicit val optionCombine: Combine[Option] = new Combine[Option]{
+        def combine[A](x: Option[A], y: Option[A]): Option[A] = x orElse y
+    }
+    implicit val setCombine: Combine[Set] = new Combine[Set]{
+        def combine[A](x: Set[A], y: Set[A]): Set[A] = x ++ y
+    }
+}
