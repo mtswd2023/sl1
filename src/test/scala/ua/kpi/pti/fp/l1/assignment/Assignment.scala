@@ -3,6 +3,7 @@ package ua.kpi.pti.fp.l1.assignment
 import org.scalacheck.Prop
 import ua.kpi.pti.fp.l1.assignment.L1PropOrTest._
 import ua.kpi.pti.fp.l1.assignment.tkalenko.NatTests
+import ua.kpi.pti.fp.l1.assignment.didukh.ExprTests
 
 import scala.annotation.unused
 
@@ -270,25 +271,7 @@ object Assignment {
       // next, come up with a way to avoid having separate lists? is there any data structure
       // suitable to associate employees with their working hours? refactor the code above to use this new approach
     },
-    new Assignment {
-      override def assigneeFullName: String = "Дідух Максим Андрійович"
-      /*sealed*/
-      @unused trait Expr {
-        // Var(name) | Num(int) | Bool(boolean) | Add(expr, expr) | And(expr, expr) | Cond(bool, expr, expr)
-
-        // Some(error) if we have e.g. Add(Bool(true), Num(10)), None otherwise
-        @unused def typecheck(): Option[String]
-        // use left to denote errors, right for results
-        @unused def eval(vars: Map[String, Either[Int, Boolean]]): Either[String, Either[Int, Boolean]]
-
-        // note that this is incomplete - please refine type hierarchy in a way that could
-        // prevent e.g. having Add(Bool,Num) or And(Num,Num). Maybe we can have different sets of types
-        // for results of parsing and actual Expr?
-      }
-      // parse("(y & T) ? (a + 1) : 100") == Cond(And(Var('y'), Bool(true)), Add(Var('a'),Num(1)), Num(100))
-      // use Left(...) to denote errors
-      @unused def parse(s: String): Either[String, Expr] = ???
-    },
+    ExprTests,
     new Assignment {
       override def assigneeFullName: String = "Ісаченко Нікіта Сергійович"
 
