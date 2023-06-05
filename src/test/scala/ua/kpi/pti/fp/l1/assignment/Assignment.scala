@@ -3,6 +3,7 @@ package ua.kpi.pti.fp.l1.assignment
 import org.scalacheck.Prop
 import ua.kpi.pti.fp.l1.assignment.L1PropOrTest._
 import ua.kpi.pti.fp.l1.assignment.tkalenko.NatTests
+import ua.kpi.pti.fp.l1.assignment.herashchenko.MonoidTests
 
 import scala.annotation.unused
 
@@ -29,25 +30,7 @@ trait Assignment extends munit.Assertions {
 object Assignment {
   val all: List[Assignment] = List(
     NatTests,
-    new Assignment {
-      override def assigneeFullName: String = "Геращенко Володимир Сергійович"
-      trait Monoid[A] {
-        def combine(
-          x: A,
-          y: A,
-        ): A
-        def empty: A
-      }
-      @unused object Monoid {
-        implicit def listMonoid[A]: Monoid[List[A]] = ???
-        implicit def optionMonoid[A]: Monoid[Option[A]] = ???
-        implicit def setMonoid[A]: Monoid[Set[A]] = ???
-      }
-      // come up with a typeclass F[_] that abstracts over List[A], Option[A], Set[A] etc
-      // so that we can generate Monoid[F[A]] just once?
-      // hint: what's the minimal common set of operations that we need to be able to combine
-      // options, lists, sets etc?
-    },
+    MonoidTests,
     new Assignment {
       override def assigneeFullName: String = "Гриценко Марія Дмитрівна"
       // implement
