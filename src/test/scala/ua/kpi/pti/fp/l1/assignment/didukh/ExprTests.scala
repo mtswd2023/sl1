@@ -18,10 +18,30 @@ object ExprTests extends Assignment {
       val result = expr.eval(vars)
       assertEquals(result, Right(Left(10)))
     },
+    "Var with non-existent variable test" -> L1SimpleTest.of {
+      val expr = Var("z")
+      val result = expr.eval(vars)
+      assertEquals(result, Left("Variable 'z' not found"))
+    },
+    "Var with boolean variable test" -> L1SimpleTest.of {
+      val expr = Var("y")
+      val result = expr.eval(vars)
+      assertEquals(result, Right(Right(true)))
+    },
     "Num test" -> L1SimpleTest.of {
       val expr = Num(42)
       val result = expr.eval(vars)
       assertEquals(result, Right(Left(42)))
+    },
+    "Num with negative value test" -> L1SimpleTest.of {
+      val expr = Num(-42)
+      val result = expr.eval(vars)
+      assertEquals(result, Right(Left(-42)))
+    },
+    "Num with zero value test" -> L1SimpleTest.of {
+      val expr = Num(0)
+      val result = expr.eval(vars)
+      assertEquals(result, Right(Left(0)))
     },
     "Bool test" -> L1SimpleTest.of {
       val expr = Bool(true)
@@ -38,8 +58,28 @@ object ExprTests extends Assignment {
       val result = expr.eval(vars)
       assertEquals(result, Left("Type error: cannot perform addition of non-integer values"))
     },
+    "Add with negative values test" -> L1SimpleTest.of {
+      val expr = Add(Num(-10), Num(-20))
+      val result = expr.eval(vars)
+      assertEquals(result, Right(Left(-30)))
+    },
+    "Add with zero values test" -> L1SimpleTest.of {
+    val expr = Add(Num(0), Num(0))
+    val result = expr.eval(vars)
+    assertEquals(result, Right(Left(0)))
+    },
     "And test" -> L1SimpleTest.of {
       val expr = And(Bool(true), Bool(false))
+      val result = expr.eval(vars)
+      assertEquals(result, Right(Right(false)))
+    },
+    "And with true values test" -> L1SimpleTest.of {
+      val expr = And(Bool(true), Bool(true))
+      val result = expr.eval(vars)
+      assertEquals(result, Right(Right(true)))
+    },
+    "And with false values test" -> L1SimpleTest.of {
+      val expr = And(Bool(false), Bool(false))
       val result = expr.eval(vars)
       assertEquals(result, Right(Right(false)))
     },
