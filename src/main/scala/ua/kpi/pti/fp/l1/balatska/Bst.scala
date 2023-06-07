@@ -16,9 +16,35 @@ sealed trait Bst {
     }
   }
 
-  override def toString(): String = {
+  /*override def toString(): String = {
     ""
+  }*/
+
+
+  //The left child is indented with "┌──────" and the right child with "└──────". 
+override def toString: String = {
+  def toStringHelper(node: Bst, indent: String, isLast: Boolean, isRoot: Boolean): String = {
+    node match {
+      case Empty => ""
+      case Node(value, label, left, right) =>
+        val nodeStr = {
+          if (isRoot)
+            s"$indent$value($label)\n"
+          else
+            s"$indent${if (isLast) "└────── " else "┌────── "}$value($label)\n"
+        }
+        val childIndent = indent + (if (isLast) "        " else "|       ")
+        val leftStr = toStringHelper(left, childIndent, isLast = false, isRoot = false)
+        val rightStr = toStringHelper(right, childIndent, isLast = true, isRoot = false)
+        leftStr + nodeStr + rightStr
+    }
   }
+
+  toStringHelper(this, "", isLast = true, isRoot = true)
+}
+
+
+
   def contains(a: Double): Boolean = {
     findNode(a) match {
       case Empty => false
@@ -46,15 +72,18 @@ sealed trait Bst {
     }
   }
 
-  def insert(a: Double, label: String): Bst = {
-    this match {
-      case Empty => Bst.Node(a, label, Bst.Empty, Bst.Empty)
-      case node@Node(value, _, left, right) =>
-        if (a < value) Bst.Node(value, label, left.insert(a, label), right)
-        else if (a > value) Bst.Node(value, label, left, right.insert(a, label))
-        else node
-  }
+def insert(a: Double, label: String): Bst = this match {
+  case Empty => Bst.Node(a, label, Bst.Empty, Bst.Empty)
+  case Node(value, label1, left, right) =>
+    if (a < value)
+      Bst.Node(value, label1, left.insert(a, label), right)
+    else if (a > value)
+      Bst.Node(value, label1, left, right.insert(a, label))
+    else
+      this
 }
+
+
   def toList(): List[Double] = {
     def inorderTraversal(node: Bst): List[Double] = {
       node match {
@@ -71,5 +100,15 @@ object Bst {
   case object Empty extends Bst
   case class Node(value: Double, label: String, left: Bst, right: Bst) extends Bst
 
-  def create(xs: List[(Double, String)]): Bst = ???
+  //def create(xs: List[(Double, String)]): Bst = ???
+
+ def create(xs: List[(Double, String)]): Bst = {
+    def insertAll(tree: Bst, elements: List[(Double, String)]): Bst = elements match {
+      case Nil => tree
+      case (value, label) :: tail => insertAll(tree.insert(value, label), tail)
+    }
+
+    insertAll(Empty, xs)
+  }
+
 }
