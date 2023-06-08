@@ -3,6 +3,7 @@ package ua.kpi.pti.fp.l1.assignment
 import org.scalacheck.Prop
 import ua.kpi.pti.fp.l1.assignment.L1PropOrTest._
 import ua.kpi.pti.fp.l1.assignment.tkalenko.NatTests
+import ua.kpi.pti.fp.l1.assignment.lopateckiy.OptFnTests
 
 import scala.annotation.unused
 
@@ -29,6 +30,7 @@ trait Assignment extends munit.Assertions {
 object Assignment {
   val all: List[Assignment] = List(
     NatTests,
+    OptFnTests,
     new Assignment {
       override def assigneeFullName: String = "Геращенко Володимир Сергійович"
       trait Monoid[A] {
@@ -137,14 +139,6 @@ object Assignment {
         @unused def flatMap[B](f: A => EitherOption[L, B]): EitherOption[L, B] = ???
         @unused def subflatMap[B](f: A => Option[B]): EitherOption[L, B] = ???
         @unused def semiFlatMap[B](f: A => Either[L, B]): EitherOption[L, B] = ???
-      }
-    },
-    new Assignment {
-      override def assigneeFullName: String = "Лопатецький Михайло Володимирович"
-      @unused case class OptFn[A, B](f: A => Option[B]) {
-        @unused def map[C](fn: B => C): OptFn[A, C] = ???
-        @unused def flatMap[C](fn: B => OptFn[A, C]): OptFn[A, C] = ???
-        @unused def andThen[C](g: B => OptFn[B, C]): OptFn[A, C] = ???
       }
     },
     new Assignment {
