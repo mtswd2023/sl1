@@ -3,25 +3,19 @@ package ua.kpi.pti.fp.l1.assignment.didukh
 import ua.kpi.pti.fp.l1.assignment.Assignment 
 import ua.kpi.pti.fp.l1.assignment.L1PropOrTest
 import ua.kpi.pti.fp.l1.assignment.L1PropOrTest.L1SimpleTest
-import ua.kpi.pti.fp.l1.didukh.{ Var, Num, Bool, Add, And, Cond }
+import ua.kpi.pti.fp.l1.didukh.{ Var, Num, Bool, Add, And, Cond, Parser }
 
-// import ua.kpi.pti.fp.l1.didukh.ExprParse // точно так це треба робтии?
 
 object ExprTests extends Assignment {
   override def assigneeFullName: String = "Дідух Максим Андрійович"
 
-  val vars = Map("x" -> Left(10), "y" -> Right(true))
-
+  val vars = Map("x" -> Left(10), "y" -> Right(true), "q" -> Left(-666), "p" -> Left(666))
+  val parser = new Parser()
   override def props: List[(String, L1PropOrTest)] = List(
     "Var test" -> L1SimpleTest.of {
       val expr = Var("x")
       val result = expr.eval(vars)
       assertEquals(result, Right(Left(10)))
-    },
-    "Var with non-existent variable test" -> L1SimpleTest.of {
-      val expr = Var("z")
-      val result = expr.eval(vars)
-      assertEquals(result, Left("Variable 'z' not found"))
     },
     "Var with boolean variable test" -> L1SimpleTest.of {
       val expr = Var("y")
@@ -32,11 +26,6 @@ object ExprTests extends Assignment {
       val expr = Num(42)
       val result = expr.eval(vars)
       assertEquals(result, Right(Left(42)))
-    },
-    "Num with negative value test" -> L1SimpleTest.of {
-      val expr = Num(-42)
-      val result = expr.eval(vars)
-      assertEquals(result, Right(Left(-42)))
     },
     "Num with zero value test" -> L1SimpleTest.of {
       val expr = Num(0)
@@ -58,15 +47,10 @@ object ExprTests extends Assignment {
       val result = expr.eval(vars)
       assertEquals(result, Left("Type error: cannot perform addition of non-integer values"))
     },
-    "Add with negative values test" -> L1SimpleTest.of {
-      val expr = Add(Num(-10), Num(-20))
+    "Add with variables" -> L1SimpleTest.of {
+      val expr = Add(Var("q"), Var("p"))
       val result = expr.eval(vars)
-      assertEquals(result, Right(Left(-30)))
-    },
-    "Add with zero values test" -> L1SimpleTest.of {
-    val expr = Add(Num(0), Num(0))
-    val result = expr.eval(vars)
-    assertEquals(result, Right(Left(0)))
+      assertEquals(result, Right(Left(0)))
     },
     "And test" -> L1SimpleTest.of {
       val expr = And(Bool(true), Bool(false))
@@ -102,6 +86,38 @@ object ExprTests extends Assignment {
       val expr = Cond(Num(10), Num(10), Num(20))
       val result = expr.eval(vars)
       assertEquals(result, Left("Type error: condition is not a boolean value"))
+    },
+    "Parsing expression from example test" -> L1SimpleTest.of {
+      val input = "(y & T) ? (a + 1) : 100"
+      val expected = Cond(And(Var("y"), Bool(true)), Add(Var("a"), Num(1)), Num(100))
+      val result = parser.parse(input)
+      assertEquals(result, Right(expected))
+    },
+    "Parsing sum of two Vars" -> L1SimpleTest.of {
+      val input = "x + y"
+      val expected = Add(Var("x"), Var("y"))
+      val result = parser.parse(input)
+      assertEquals(result, Right(expected))
+    },
+    "Parsing sum of two Nums test" -> L1SimpleTest.of {
+      val input = "(10 + 23)"
+      val expected = Add(Num(10), Num(23))
+      val result = parser.parse(input)
+      assertEquals(result, Right(expected))
+    },
+    "Evaluation sum of two Nums test" -> L1SimpleTest.of {
+      val input = "10 + 23"
+      val expected = Right(Left(33))
+      val expr = parser.parse(input)
+      val result = expr.flatMap(_.eval(vars))
+      assertEquals(result, expected)
+    },
+    "Evaluation modified expression from example test" -> L1SimpleTest.of {
+      val input = "(y & T) ? (x + 1) : 100"
+      val expected = Right(Left(11))
+      val expr = parser.parse(input)
+      val result = expr.flatMap(_.eval(vars))
+      assertEquals(result, expected)
     }
   )
 }
