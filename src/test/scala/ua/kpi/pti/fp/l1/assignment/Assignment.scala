@@ -3,6 +3,7 @@ package ua.kpi.pti.fp.l1.assignment
 import org.scalacheck.Prop
 import ua.kpi.pti.fp.l1.assignment.L1PropOrTest._
 import ua.kpi.pti.fp.l1.assignment.tkalenko.NatTests
+import ua.kpi.pti.fp.l1.assignment.Doroshenko.TreeTests
 
 import scala.annotation.unused
 
@@ -29,6 +30,7 @@ trait Assignment extends munit.Assertions {
 object Assignment {
   val all: List[Assignment] = List(
     NatTests,
+    TreeTests,
     new Assignment {
       override def assigneeFullName: String = "Геращенко Володимир Сергійович"
       trait Monoid[A] {
@@ -62,21 +64,7 @@ object Assignment {
         def limitToDepth(n: Int): Tree[A] // cuts branches deeper than n
       }
     },
-    new Assignment {
-      override def assigneeFullName: String = "Дорошенко Юрій Олександрович"
-      // implement
-      // class Tree[A] = Leaf(a:A)|Branch(l:Tree[A],r:Tree[A])
-      // sealed?
-      // tail-recursive methods
-      @unused trait Tree[A] {
-        def reduce[B](zero: B)(f: (A, B) => B): B = ???
-        def filter(f: A => Boolean): Tree[A] = ???
-        def takeWhile(f: A => Boolean): Tree[A] = ???
-        def minDepth(): Int
-        def maxDepth(): Int
-        override def toString(): String = ??? // tree-like top-down representation
-      }
-    },
+
     new Assignment {
       override def assigneeFullName: String = "Кіяшко Ігор Володимирович"
       // https://en.wikipedia.org/wiki/Linear_congruential_generator
