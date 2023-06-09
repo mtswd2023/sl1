@@ -4,7 +4,11 @@ sealed trait Expr {
   def eval(vars: Map[String, Int]): Either[String, Either[Expr, Int]]
 }
 
-case class BinaryOp(op: String, left: Expr, right: Expr) extends Expr {
+case class BinaryOp(
+  op: String,
+  left: Expr,
+  right: Expr,
+) extends Expr {
   override def eval(vars: Map[String, Int]): Either[String, Either[Expr, Int]] = {
     left.eval(vars) match {
       case Left(error) => Left(error)
@@ -68,7 +72,11 @@ object Expr {
     }
   }
 
-  def evalBinaryOp(op: String, left: Int, right: Int): Either[String, Either[Expr, Int]] = {
+  def evalBinaryOp(
+    op: String,
+    left: Int,
+    right: Int,
+  ): Either[String, Either[Expr, Int]] = {
     op match {
       case "+" => Right(Right(left + right))
       case "-" => Right(Right(left - right))
