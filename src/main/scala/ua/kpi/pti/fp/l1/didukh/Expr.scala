@@ -18,20 +18,23 @@ case class Var(name: String) extends Expr {
 }
 
 case class Num(value: Int) extends Expr {
-  def typecheck(): Option[String] = None 
+  def typecheck(): Option[String] = None
 
   def eval(vars: Map[String, Either[Int, Boolean]]): Either[String, Either[Int, Boolean]] =
-    Right(Left(value)) 
+    Right(Left(value))
 }
 
 case class Bool(value: Boolean) extends Expr {
-  def typecheck(): Option[String] = None 
+  def typecheck(): Option[String] = None
 
   def eval(vars: Map[String, Either[Int, Boolean]]): Either[String, Either[Int, Boolean]] =
-    Right(Right(value)) 
+    Right(Right(value))
 }
 
-case class Add(expr1: Expr, expr2: Expr) extends Expr {
+case class Add(
+  expr1: Expr,
+  expr2: Expr,
+) extends Expr {
   def typecheck(): Option[String] = {
     (expr1.typecheck(), expr2.typecheck()) match {
       case (None, None) => None
@@ -49,7 +52,10 @@ case class Add(expr1: Expr, expr2: Expr) extends Expr {
   }
 }
 
-case class And(expr1: Expr, expr2: Expr) extends Expr {
+case class And(
+  expr1: Expr,
+  expr2: Expr,
+) extends Expr {
   def typecheck(): Option[String] = {
     (expr1.typecheck(), expr2.typecheck()) match {
       case (None, None) => None
@@ -67,7 +73,11 @@ case class And(expr1: Expr, expr2: Expr) extends Expr {
   }
 }
 
-case class Cond(bool: Expr, expr1: Expr, expr2: Expr) extends Expr {
+case class Cond(
+  bool: Expr,
+  expr1: Expr,
+  expr2: Expr,
+) extends Expr {
   def typecheck(): Option[String] = {
     (bool.typecheck(), expr1.typecheck(), expr2.typecheck()) match {
       case (None, None, None) => None

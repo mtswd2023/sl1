@@ -1,10 +1,9 @@
 package ua.kpi.pti.fp.l1.assignment.didukh
 
-import ua.kpi.pti.fp.l1.assignment.Assignment 
+import ua.kpi.pti.fp.l1.assignment.Assignment
 import ua.kpi.pti.fp.l1.assignment.L1PropOrTest
 import ua.kpi.pti.fp.l1.assignment.L1PropOrTest.L1SimpleTest
-import ua.kpi.pti.fp.l1.didukh.{ Var, Num, Bool, Add, And, Cond, Parser }
-
+import ua.kpi.pti.fp.l1.didukh.{Var, Num, Bool, Add, And, Cond, Parser}
 
 object ExprTests extends Assignment {
   override def assigneeFullName: String = "Дідух Максим Андрійович"
@@ -118,6 +117,6 @@ object ExprTests extends Assignment {
       val expr = parser.parse(input)
       val result = expr.flatMap(_.eval(vars))
       assertEquals(result, expected)
-    }
+    },
   )
 }
