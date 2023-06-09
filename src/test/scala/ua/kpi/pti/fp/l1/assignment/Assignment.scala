@@ -342,6 +342,6 @@ object Assignment {
       // and
       // "\u2B1C" (⬜) (or maybe just a space (" " or "\u0020"))
     },
-    ExprTests
+    ExprTests,
   )
 }
