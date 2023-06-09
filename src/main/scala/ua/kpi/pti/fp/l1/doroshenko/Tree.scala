@@ -4,27 +4,34 @@ sealed trait Tree[+A] {
   override def toString: String = this match {
     case Leaf(value) => value.toString
     case Branch(left, right) => s"Branch(${left.toString}, ${right.toString})"
+    case EmptyTree => "empty"
   }
 }
 
 case class Leaf[A](value: A) extends Tree[A]
 
-case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A]
+case class Branch[A](
+  left: Tree[A],
+  right: Tree[A],
+) extends Tree[A]
 
 sealed trait Empty extends Tree[Nothing]
 case object EmptyTree extends Empty
 
 object Tree {
 
-
-  private def reduce[A, B](tree: Tree[A], zero: B)(f: (A, B) => B): B = tree match {
+  def reduce[A, B](
+    tree: Tree[A],
+    zero: B,
+  )(
+    f: (A, B) => B,
+  ): B = tree match {
     case Leaf(value) => f(value, zero)
     case Branch(left, right) =>
       val leftResult = reduce(left, zero)(f)
       reduce(right, leftResult)(f)
     case _ => zero
   }
-
 
   def filter[A](tree: Tree[A])(f: A => Boolean): Tree[A] = tree match {
     case Leaf(value) =>
@@ -38,8 +45,7 @@ object Tree {
     case _ => EmptyTree
   }
 
-
-  private def takeWhile[A](tree: Tree[A])(f: A => Boolean): Tree[A] = tree match {
+  def takeWhile[A](tree: Tree[A])(f: A => Boolean): Tree[A] = tree match {
     case Leaf(value) =>
       if (f(value)) Leaf(value)
       else EmptyTree
@@ -50,9 +56,12 @@ object Tree {
     case _ => EmptyTree
   }
 
-  //method is tail-recursive
-  private def minDepth[A](tree: Tree[A]): Int = {
-    def minDepthAst(tree: Tree[A], depth: Int): Int = tree match {
+  // method is tail-recursive
+  def minDepth[A](tree: Tree[A]): Int = {
+    def minDepthAst(
+      tree: Tree[A],
+      depth: Int,
+    ): Int = tree match {
       case Leaf(_) => depth + 1
       case Branch(left, right) =>
         val leftDepth = minDepthAst(left, depth + 1)
@@ -64,9 +73,12 @@ object Tree {
     minDepthAst(tree, 0)
   }
 
-  //method is tail-recursive
-  private def maxDepth[A](tree: Tree[A]): Int = {
-    def maxDepthAst(tree: Tree[A], depth: Int): Int = tree match {
+  // method is tail-recursive
+  def maxDepth[A](tree: Tree[A]): Int = {
+    def maxDepthAst(
+      tree: Tree[A],
+      depth: Int,
+    ): Int = tree match {
       case Leaf(_) => depth + 1
       case Branch(left, right) =>
         val leftDepth = maxDepthAst(left, depth + 1)
