@@ -1,15 +1,12 @@
 package ua.kpi.pti.fp.l1.assignment.kiyashko
 
+import ua.kpi.pti.fp.l1.kiyashko.LinearCongruentialGenerator
 import org.scalacheck.{Gen, Prop}
 import ua.kpi.pti.fp.l1.assignment.L1PropOrTest._
 import ua.kpi.pti.fp.l1.assignment.{Assignment, L1PropOrTest}
 
-import ua.kpi.pti.fp.l1.kiyashko.Lcg
-
-
-
-case object LinearCongruentialGeneratorTests extends Assignment {
-    override def assigneeFullName: String = "Кіяшко Ігор Володимирович"
+object LinearCongruentialGeneratorTests {
+  def main(args: Array[String]): Unit = {
     val seed = 12345L
     val a = 1103515245L
     val c = 12345L
@@ -28,4 +25,5 @@ case object LinearCongruentialGeneratorTests extends Assignment {
     assert(maxValue < m && minValue >= 0, "Generated values are out of range!")
 
     println("All tests passed!")
+  }
 }
