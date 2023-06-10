@@ -52,7 +52,6 @@ object Assignment {
         def limitToDepth(n: Int): Tree[A] // cuts branches deeper than n
       }
     },
-
     new Assignment {
       override def assigneeFullName: String = "Кіяшко Ігор Володимирович"
       // https://en.wikipedia.org/wiki/Linear_congruential_generator
@@ -131,7 +130,6 @@ object Assignment {
       @unused def fromList[A](xs: List[A]): DelayedList[A] = ???
     },
     nedashkivska.ExprTests,
-
     new Assignment {
       override def assigneeFullName: String = "Прунчак Кирило Миколайович"
       @unused trait Json {
