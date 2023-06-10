@@ -221,7 +221,7 @@ object Assignment {
       // next, come up with a way to avoid having separate lists? is there any data structure
       // suitable to associate employees with their working hours? refactor the code above to use this new approach
     },
-    ExprTests,
+    didukh.ExprTests,
     new Assignment {
       override def assigneeFullName: String = "Ісаченко Нікіта Сергійович"
 
