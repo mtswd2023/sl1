@@ -13,7 +13,7 @@ sealed trait Json {
           .replace("""\\\""", """\""")
           .replace("""//""", """/""")
           .replace("""///""", """/""")
-          .pipe(s=>s""""$s"""")
+          .pipe(s => s""""$s"""")
       case Null => "null"
       case Arr(xs) => xs.map(s => s"""$s""").mkString("[", ",", "]")
       case Obj(vs) =>
