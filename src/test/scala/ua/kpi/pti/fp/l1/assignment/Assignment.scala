@@ -3,7 +3,7 @@ package ua.kpi.pti.fp.l1.assignment
 import org.scalacheck.Prop
 import ua.kpi.pti.fp.l1.assignment.L1PropOrTest._
 import ua.kpi.pti.fp.l1.assignment.tkalenko.NatTests
-
+import ua.kpi.pti.fp.l1.assignment.prunchak.JsonTest
 import scala.annotation.unused
 
 // Please put your definitions into separate packages upon implementation
@@ -29,6 +29,7 @@ trait Assignment extends munit.Assertions {
 object Assignment {
   val all: List[Assignment] = List(
     NatTests,
+    JsonTest,
     new Assignment {
       override def assigneeFullName: String = "Геращенко Володимир Сергійович"
       trait Monoid[A] {
