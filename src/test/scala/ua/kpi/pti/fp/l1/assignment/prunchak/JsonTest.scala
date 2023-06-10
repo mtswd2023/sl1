@@ -10,11 +10,11 @@ case object JsonTest extends Assignment {
 
   override val props: List[(String, L1PropOrTest)] = {
     def gen(
-      depth: Int
+      depth: Int,
     ): Gen[Json] = {
       Gen.oneOf[Json](
         Gen.choose(0.0, 1000.0).map(Num),
-        Gen.stringOfN(5,Gen.alphaNumChar).map(Str),
+        Gen.stringOfN(5, Gen.alphaNumChar).map(Str),
         Gen.const(Null),
         (if (depth <= 0) {
            Gen.const(Nil)
@@ -24,7 +24,7 @@ case object JsonTest extends Assignment {
         (if (depth <= 0) {
            Gen.const(Map.empty[String, Json])
          } else {
-           Gen.mapOfN(5, Gen.zip(Gen.stringOfN(5,Gen.alphaNumChar), gen(depth - 1)))
+           Gen.mapOfN(5, Gen.zip(Gen.stringOfN(5, Gen.alphaNumChar), gen(depth - 1)))
          }).map(Obj),
       )
     }
