@@ -1,3 +1,4 @@
+sbt scalafmtAll
 package ua.kpi.pti.fp.l1.kiyashko
 
 object LinearCongruentialGenerator {
