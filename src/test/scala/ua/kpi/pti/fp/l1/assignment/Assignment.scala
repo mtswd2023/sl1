@@ -4,8 +4,9 @@ import org.scalacheck.Prop
 import ua.kpi.pti.fp.l1.assignment.L1PropOrTest._
 import ua.kpi.pti.fp.l1.assignment.tkalenko.NatTests
 import ua.kpi.pti.fp.l1.assignment.lopateckiy.OptFnTests
-
+import ua.kpi.pti.fp.l1.assignment.herashchenko.MonoidTests
 import scala.annotation.unused
+import ua.kpi.pti.fp.l1.assignment.balatska.BstTests
 
 // Please put your definitions into separate packages upon implementation
 // All implementations should come up with a set of reasonable laws
@@ -31,25 +32,7 @@ object Assignment {
   val all: List[Assignment] = List(
     NatTests,
     OptFnTests,
-    new Assignment {
-      override def assigneeFullName: String = "Геращенко Володимир Сергійович"
-      trait Monoid[A] {
-        def combine(
-          x: A,
-          y: A,
-        ): A
-        def empty: A
-      }
-      @unused object Monoid {
-        implicit def listMonoid[A]: Monoid[List[A]] = ???
-        implicit def optionMonoid[A]: Monoid[Option[A]] = ???
-        implicit def setMonoid[A]: Monoid[Set[A]] = ???
-      }
-      // come up with a typeclass F[_] that abstracts over List[A], Option[A], Set[A] etc
-      // so that we can generate Monoid[F[A]] just once?
-      // hint: what's the minimal common set of operations that we need to be able to combine
-      // options, lists, sets etc?
-    },
+    MonoidTests,
     new Assignment {
       override def assigneeFullName: String = "Гриценко Марія Дмитрівна"
       // implement
@@ -232,22 +215,7 @@ object Assignment {
       @unused def parse(s: String): Either[String, Bool] = ??? // use Left(...) to inform about errors
       // example: parse("(T & a)|F & !(b|c)")
     },
-    new Assignment {
-      override def assigneeFullName: String = "Балацька Вікторія Віталіївна"
-      // binary search tree
-      // Empty | Node(value,label,left,right), values are Double
-      /*sealed?*/
-      @unused trait Bst {
-        @unused def toString(): String // top-down, tree-like
-        @unused def contains(a: Double): Boolean
-        @unused def labelOf(a: Double): String
-        @unused def valueOf(lable: String): Double
-        @unused def insert(a: Double): Bst
-        @unused def toList(): List[Double] // sorted in ascending order
-      }
-      @unused
-      def create(xs: List[(Double, String)]): Bst = ???
-    },
+    BstTests,
     new Assignment {
       override def assigneeFullName: String = "Бондаренко Олександр Сергійович"
       type WageCalculator = Int => Int
