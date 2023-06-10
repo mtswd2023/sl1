@@ -10,7 +10,7 @@ import ua.kpi.pti.fp.l1.assignment.lopateckiy.OptFnTests
 import ua.kpi.pti.fp.l1.assignment.herashchenko.MonoidTests
 import scala.annotation.unused
 import ua.kpi.pti.fp.l1.assignment.balatska.BstTests
-
+import ua.kpi.pti.fp.l1.assignment.prunchak.JsonTest
 // Please put your definitions into separate packages upon implementation
 // All implementations should come up with a set of reasonable laws
 // Feel free to add any number of helper functions, convenient constructors etc etc
@@ -37,6 +37,7 @@ object Assignment {
     TreeTests,
     OptFnTests,
     MonoidTests,
+    JsonTest,
     new Assignment {
       override def assigneeFullName: String = "Гриценко Марія Дмитрівна"
       // implement
@@ -51,7 +52,6 @@ object Assignment {
         def limitToDepth(n: Int): Tree[A] // cuts branches deeper than n
       }
     },
-
     new Assignment {
       override def assigneeFullName: String = "Кіяшко Ігор Володимирович"
       // https://en.wikipedia.org/wiki/Linear_congruential_generator
@@ -130,7 +130,6 @@ object Assignment {
       @unused def fromList[A](xs: List[A]): DelayedList[A] = ???
     },
     nedashkivska.ExprTests,
-
     new Assignment {
       override def assigneeFullName: String = "Прунчак Кирило Миколайович"
       @unused trait Json {
