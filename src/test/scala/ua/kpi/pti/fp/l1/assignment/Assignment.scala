@@ -3,7 +3,8 @@ package ua.kpi.pti.fp.l1.assignment
 import org.scalacheck.Prop
 import ua.kpi.pti.fp.l1.assignment.L1PropOrTest._
 import ua.kpi.pti.fp.l1.assignment.tkalenko.NatTests
-import ua.kpi.pti.fp.l1.assignment.nedashkivska.ExprTests
+import ua.kpi.pti.fp.l1.assignment.patsora
+import ua.kpi.pti.fp.l1.assignment.nedashkivska
 import ua.kpi.pti.fp.l1.assignment.Doroshenko.TreeTests
 import ua.kpi.pti.fp.l1.assignment.lopateckiy.OptFnTests
 import ua.kpi.pti.fp.l1.assignment.herashchenko.MonoidTests
@@ -129,7 +130,7 @@ object Assignment {
       // fills list with Bs lazily until next()._2 is not None
       @unused def fromList[A](xs: List[A]): DelayedList[A] = ???
     },
-    ExprTests,
+    nedashkivska.ExprTests,
 
     new Assignment {
       override def assigneeFullName: String = "Прунчак Кирило Миколайович"
@@ -270,23 +271,6 @@ object Assignment {
       // and
       // "\u2B1C" (⬜) (or maybe just a space (" " or "\u0020"))
     },
-    new Assignment {
-      override def assigneeFullName: String = "Пацьора Поліна Олегівна"
-      // Num(int)|Add(expr,expr)|Mul(expr,expr)|Var(name)
-      /*sealed*/
-      trait Expr {
-        // use Left() for errors,
-        // Right(Left(...)) for successful evaluation but if you have some variables left
-        //    (e.g. you have (x + y) and were only given x - in that case just values for x and return the
-        //    expression with only y as a free variable
-        // Right(Right(...)) if you can completely evaluate the expression
-        def eval(vars: Map[String, Int]): Either[String, Either[Expr, Int]]
-      }
-      // you have the following syntax:
-      // "(+ 1 (+ x (+ y (* x 2)))"
-      // use Left for errors, Right for successful parsing
-      @unused
-      def parse(s: String): Either[String, Expr] = ???
-    },
+    patsora.ExprTests,
   )
 }
