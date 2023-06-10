@@ -6,6 +6,7 @@ import ua.kpi.pti.fp.l1.assignment.tkalenko.NatTests
 import ua.kpi.pti.fp.l1.assignment.patsora
 import ua.kpi.pti.fp.l1.assignment.nedashkivska
 import ua.kpi.pti.fp.l1.assignment.Doroshenko.TreeTests
+import ua.kpi.pti.fp.l1.assignment.kiyashko.LcgTests
 import ua.kpi.pti.fp.l1.assignment.lopateckiy.OptFnTests
 import ua.kpi.pti.fp.l1.assignment.herashchenko.MonoidTests
 import scala.annotation.unused
@@ -37,6 +38,7 @@ object Assignment {
     TreeTests,
     OptFnTests,
     MonoidTests,
+    LcgTests,
     new Assignment {
       override def assigneeFullName: String = "Гриценко Марія Дмитрівна"
       // implement
@@ -52,24 +54,6 @@ object Assignment {
       }
     },
 
-    new Assignment {
-      override def assigneeFullName: String = "Кіяшко Ігор Володимирович"
-      // https://en.wikipedia.org/wiki/Linear_congruential_generator
-      // state is not stored, it's returned as the _2 of the next() call
-      trait Random {
-        def next(): (Int, Random)
-      }
-      type RandomType[A] = Random => (A, Random)
-      @unused def fill(r: Random)(n: Int): List[Int] = ??? // list of n random ints
-      @unused val int: RandomType[Int] = _.next()
-      @unused def double(r: Random): RandomType[Double] = ???
-      @unused def zipWith[A, B, C](
-        ra: RandomType[A],
-        rb: RandomType[B],
-      )(
-        f: (A, B) => C,
-      ): RandomType[C] = ???
-    },
     new Assignment {
       override def assigneeFullName: String = "Корнійчук Іван Геннадійович"
       trait DelayedList[A] {
