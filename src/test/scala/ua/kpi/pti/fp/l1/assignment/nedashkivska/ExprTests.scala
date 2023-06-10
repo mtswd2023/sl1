@@ -1,20 +1,14 @@
 package ua.kpi.pti.fp.l1.assignment.nedashkivska
 
-import org.scalacheck.{Gen, Prop}
 import org.scalacheck.Prop.forAll
+import org.scalacheck.{Gen, Prop}
 import ua.kpi.pti.fp.l1.assignment.L1PropOrTest._
-// import org.scalacheck.Arbitrary
-// import org.scalacheck.Arbitrary.arbitrary
-// import ua.kpi.pti.fp.l1.assignment.{Assignment, L1PropOrTest}
 import ua.kpi.pti.fp.l1.assignment.{Assignment, L1PropOrTest}
 import ua.kpi.pti.fp.l1.nedashkivska._
 
 case object ExprTests extends Assignment {
-
   override def assigneeFullName: String = "Недашківська Аріна Віталіївна"
-
   implicit val arbitrary: Gen[Double] = Gen.choose(0, 1_000_000.0)
-
   val subProp: Prop = forAll {
     (
       d1: Double,
@@ -51,7 +45,6 @@ case object ExprTests extends Assignment {
         true
       }
   }
-
   override val props: List[(String, L1PropOrTest)] = List(
     "Num should return the correct value" -> L1Prop(Prop.forAll(arbitrary) { (d: Double) =>
       val num: Num = Num(d)
@@ -98,5 +91,7 @@ case object ExprTests extends Assignment {
         divExpr.value() == (d1 / d2)
     }),
   )
+
+
 
 }

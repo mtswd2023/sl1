@@ -35,4 +35,3 @@ case class Div(
 ) extends Expr {
   override def value(): Double = expr1.value() / expr2.value()
 }
-

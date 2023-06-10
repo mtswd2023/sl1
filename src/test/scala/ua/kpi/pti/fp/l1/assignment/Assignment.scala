@@ -164,6 +164,7 @@ object Assignment {
       @unused def fromList[A](xs: List[A]): DelayedList[A] = ???
     },
     ExprTests,
+
     new Assignment {
       override def assigneeFullName: String = "Прунчак Кирило Миколайович"
       @unused trait Json {
