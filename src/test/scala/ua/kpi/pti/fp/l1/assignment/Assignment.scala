@@ -5,7 +5,6 @@ import ua.kpi.pti.fp.l1.assignment.L1PropOrTest._
 import ua.kpi.pti.fp.l1.assignment.tkalenko.NatTests
 import ua.kpi.pti.fp.l1.assignment.nedashkivska.ExprTests
 import ua.kpi.pti.fp.l1.assignment.Doroshenko.TreeTests
-import ua.kpi.pti.fp.l1.assignment.didukh.ExprTests
 import ua.kpi.pti.fp.l1.assignment.lopateckiy.OptFnTests
 import ua.kpi.pti.fp.l1.assignment.herashchenko.MonoidTests
 import scala.annotation.unused
