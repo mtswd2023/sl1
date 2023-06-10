@@ -4,8 +4,11 @@ import org.scalacheck.Prop
 import ua.kpi.pti.fp.l1.assignment.L1PropOrTest._
 import ua.kpi.pti.fp.l1.assignment.tkalenko.NatTests
 import ua.kpi.pti.fp.l1.assignment.Doroshenko.TreeTests
-
+import ua.kpi.pti.fp.l1.assignment.didukh.ExprTests
+import ua.kpi.pti.fp.l1.assignment.lopateckiy.OptFnTests
+import ua.kpi.pti.fp.l1.assignment.herashchenko.MonoidTests
 import scala.annotation.unused
+import ua.kpi.pti.fp.l1.assignment.balatska.BstTests
 
 // Please put your definitions into separate packages upon implementation
 // All implementations should come up with a set of reasonable laws
@@ -31,25 +34,8 @@ object Assignment {
   val all: List[Assignment] = List(
     NatTests,
     TreeTests,
-    new Assignment {
-      override def assigneeFullName: String = "Геращенко Володимир Сергійович"
-      trait Monoid[A] {
-        def combine(
-          x: A,
-          y: A,
-        ): A
-        def empty: A
-      }
-      @unused object Monoid {
-        implicit def listMonoid[A]: Monoid[List[A]] = ???
-        implicit def optionMonoid[A]: Monoid[Option[A]] = ???
-        implicit def setMonoid[A]: Monoid[Set[A]] = ???
-      }
-      // come up with a typeclass F[_] that abstracts over List[A], Option[A], Set[A] etc
-      // so that we can generate Monoid[F[A]] just once?
-      // hint: what's the minimal common set of operations that we need to be able to combine
-      // options, lists, sets etc?
-    },
+    OptFnTests,
+    MonoidTests,
     new Assignment {
       override def assigneeFullName: String = "Гриценко Марія Дмитрівна"
       // implement
@@ -125,14 +111,6 @@ object Assignment {
         @unused def flatMap[B](f: A => EitherOption[L, B]): EitherOption[L, B] = ???
         @unused def subflatMap[B](f: A => Option[B]): EitherOption[L, B] = ???
         @unused def semiFlatMap[B](f: A => Either[L, B]): EitherOption[L, B] = ???
-      }
-    },
-    new Assignment {
-      override def assigneeFullName: String = "Лопатецький Михайло Володимирович"
-      @unused case class OptFn[A, B](f: A => Option[B]) {
-        @unused def map[C](fn: B => C): OptFn[A, C] = ???
-        @unused def flatMap[C](fn: B => OptFn[A, C]): OptFn[A, C] = ???
-        @unused def andThen[C](g: B => OptFn[B, C]): OptFn[A, C] = ???
       }
     },
     new Assignment {
@@ -226,22 +204,7 @@ object Assignment {
       @unused def parse(s: String): Either[String, Bool] = ??? // use Left(...) to inform about errors
       // example: parse("(T & a)|F & !(b|c)")
     },
-    new Assignment {
-      override def assigneeFullName: String = "Балацька Вікторія Віталіївна"
-      // binary search tree
-      // Empty | Node(value,label,left,right), values are Double
-      /*sealed?*/
-      @unused trait Bst {
-        @unused def toString(): String // top-down, tree-like
-        @unused def contains(a: Double): Boolean
-        @unused def labelOf(a: Double): String
-        @unused def valueOf(lable: String): Double
-        @unused def insert(a: Double): Bst
-        @unused def toList(): List[Double] // sorted in ascending order
-      }
-      @unused
-      def create(xs: List[(Double, String)]): Bst = ???
-    },
+    BstTests,
     new Assignment {
       override def assigneeFullName: String = "Бондаренко Олександр Сергійович"
       type WageCalculator = Int => Int
@@ -258,25 +221,7 @@ object Assignment {
       // next, come up with a way to avoid having separate lists? is there any data structure
       // suitable to associate employees with their working hours? refactor the code above to use this new approach
     },
-    new Assignment {
-      override def assigneeFullName: String = "Дідух Максим Андрійович"
-      /*sealed*/
-      @unused trait Expr {
-        // Var(name) | Num(int) | Bool(boolean) | Add(expr, expr) | And(expr, expr) | Cond(bool, expr, expr)
-
-        // Some(error) if we have e.g. Add(Bool(true), Num(10)), None otherwise
-        @unused def typecheck(): Option[String]
-        // use left to denote errors, right for results
-        @unused def eval(vars: Map[String, Either[Int, Boolean]]): Either[String, Either[Int, Boolean]]
-
-        // note that this is incomplete - please refine type hierarchy in a way that could
-        // prevent e.g. having Add(Bool,Num) or And(Num,Num). Maybe we can have different sets of types
-        // for results of parsing and actual Expr?
-      }
-      // parse("(y & T) ? (a + 1) : 100") == Cond(And(Var('y'), Bool(true)), Add(Var('a'),Num(1)), Num(100))
-      // use Left(...) to denote errors
-      @unused def parse(s: String): Either[String, Expr] = ???
-    },
+    ExprTests,
     new Assignment {
       override def assigneeFullName: String = "Ісаченко Нікіта Сергійович"
 
