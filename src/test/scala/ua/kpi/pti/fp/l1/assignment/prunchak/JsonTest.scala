@@ -1,26 +1,38 @@
 package ua.kpi.pti.fp.l1.assignment.prunchak
 
-import org.scalacheck.Gen
-import org.scalacheck.Prop
+import org.scalacheck.{Arbitrary, Gen, Prop}
 import ua.kpi.pti.fp.l1.assignment.L1PropOrTest._
 import ua.kpi.pti.fp.l1.assignment.{Assignment, L1PropOrTest}
-import ua.kpi.pti.fp.l1.prunchak.{Num, Str, Null, Obj, Arr, JsonStart}
+import ua.kpi.pti.fp.l1.prunchak._
 
 case object JsonTest extends Assignment {
   override def assigneeFullName: String = "Прунчак Кирило Миколайович"
 
   override val props: List[(String, L1PropOrTest)] = {
-    lazy val arbitrary: Gen[JsonStart] = Gen.oneOf(
-      Gen.choose(0.0, 1000.0).map(Num),
-      Gen.alphaStr.map(Str),
-      Gen.const(Null: JsonStart),
-      Gen.listOf(arbitrary).map(Arr),
-      Gen.mapOf(Gen.zip(Gen.alphaStr, arbitrary)).map(Obj),
-    )
-
+    def gen(
+      depth: Int
+    ): Gen[Json] = {
+      Gen.oneOf[Json](
+        Gen.choose(0.0, 1000.0).map(Num),
+        Gen.stringOfN(5,Gen.alphaNumChar).map(Str),
+        Gen.const(Null),
+        (if (depth <= 0) {
+           Gen.const(Nil)
+         } else {
+           Gen.listOfN(5, gen(depth - 1))
+         }).map(Arr),
+        (if (depth <= 0) {
+           Gen.const(Map.empty[String, Json])
+         } else {
+           Gen.mapOfN(5, Gen.zip(Gen.stringOfN(5,Gen.alphaNumChar), gen(depth - 1)))
+         }).map(Obj),
+      )
+    }
+    implicit val arbitrary: Arbitrary[Json] = Arbitrary(gen(3))
     List(
       "Num is correctly converted to toString" -> L1Prop(
-        Prop.forAll(arbitrary) { json: JsonStart =>
+        Prop.forAll { json: Json =>
+          println(json)
           json match {
             case Num(n) => json.toString == n.toString
             case _ => true
@@ -28,7 +40,7 @@ case object JsonTest extends Assignment {
         },
       ),
       "Str is correctly converted to toString" -> L1Prop(
-        Prop.forAll(arbitrary) { json: JsonStart =>
+        Prop.forAll { json: Json =>
           json match {
             case Str(s) => json.toString == s""""$s""""
             case _ => true
@@ -36,7 +48,7 @@ case object JsonTest extends Assignment {
         },
       ),
       "Null is correctly converted to toString" -> L1Prop(
-        Prop.forAll(arbitrary) { json: JsonStart =>
+        Prop.forAll { json: Json =>
           json match {
             case Null => json.toString == "null"
             case _ => true
@@ -44,7 +56,7 @@ case object JsonTest extends Assignment {
         },
       ),
       "Arr is correctly converted to toString" -> L1Prop(
-        Prop.forAll(arbitrary) { json: JsonStart =>
+        Prop.forAll { json: Json =>
           json match {
             case Arr(xs) =>
               val expected = xs.map(_.toString).mkString("[", ",", "]")
@@ -54,7 +66,7 @@ case object JsonTest extends Assignment {
         },
       ),
       "Obj is correctly converted to toString" -> L1Prop(
-        Prop.forAll(arbitrary) { json: JsonStart =>
+        Prop.forAll { json: Json =>
           json match {
             case Obj(vs) =>
               val properties = vs.map { case (key, value) => s""""$key":${value.toString}""" }
@@ -65,7 +77,7 @@ case object JsonTest extends Assignment {
         },
       ),
       "findFirstValue returns the correct value for Obj" -> L1Prop(
-        Prop.forAll(arbitrary) { json: JsonStart =>
+        Prop.forAll { json: Json =>
           json match {
             case obj: Obj =>
               val key = "testKey"
