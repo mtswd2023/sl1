@@ -1,27 +1,28 @@
 package ua.kpi.pti.fp.l1.prunchak
 
-trait JsonStart {
+import scala.util.chaining.scalaUtilChainingOps
+
+sealed trait Json {
   override def toString: String = {
     this match {
       case Num(n) => s"$n"
       case Str(string) =>
-        val modifiedString = string
+        string
           .replace(""""""", """\"""")
           .replace("""\\""", """\""")
           .replace("""\\\""", """\""")
           .replace("""//""", """/""")
           .replace("""///""", """/""")
-        modifiedString
+          .pipe(s=>s""""$s"""")
       case Null => "null"
-      case Arr(xs) => xs.map(_.toString).mkString("[", ",", "]")
+      case Arr(xs) => xs.map(s => s"""$s""").mkString("[", ",", "]")
       case Obj(vs) =>
         val properties = vs.map { case (key, value) => s""""$key":${value.toString}""" }
         properties.mkString("{", ",", "}")
-      case _ => ""
     }
   }
 
-  def findFirstValue(key: String): Option[JsonStart] = {
+  def findFirstValue(key: String): Option[Json] = {
     this match {
       case Obj(vs) =>
         vs.get(key) match {
@@ -37,12 +38,12 @@ trait JsonStart {
 
 }
 
-case class Num(n: Double) extends JsonStart
+case class Num(n: Double) extends Json
 
-case class Str(string: String) extends JsonStart
+case class Str(string: String) extends Json
 
-case object Null extends JsonStart
+case object Null extends Json
 
-case class Arr(xs: Seq[JsonStart]) extends JsonStart
+case class Arr(xs: Seq[Json]) extends Json
 
-case class Obj(vs: Map[String, JsonStart]) extends JsonStart
+case class Obj(vs: Map[String, Json]) extends Json
