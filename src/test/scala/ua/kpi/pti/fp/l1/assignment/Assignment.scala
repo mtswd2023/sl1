@@ -7,6 +7,7 @@ import ua.kpi.pti.fp.l1.assignment.herashchenko.MonoidTests
 
 import scala.annotation.unused
 import ua.kpi.pti.fp.l1.assignment.balatska.BstTests
+import ua.kpi.pti.fp.l1.assignment.bondarenko.WageCalculatorTests
 
 // Please put your definitions into separate packages upon implementation
 // All implementations should come up with a set of reasonable laws
@@ -223,22 +224,7 @@ object Assignment {
       // example: parse("(T & a)|F & !(b|c)")
     },
     BstTests,
-    new Assignment {
-      override def assigneeFullName: String = "Бондаренко Олександр Сергійович"
-      type WageCalculator = Int => Int
-      // example:
-      @unused val wage: WageCalculator =
-        hours => hours * 20 // total pay per day given how many hours someone worked for
-      // use Left(some error message) if some employee worked for more than 10 hours
-      @unused def hoursToWages(hoursPerEmployee: List[Int])(wage: WageCalculator): Either[String, List[Int]] = ???
-      // now change this to accept a list of wages (different employees have different rates)
-      @unused def hoursToWages(hoursPerEmployee: List[Int])(wages: List[WageCalculator]): Either[String, List[Int]] =
-        ???
-      // next, design a set of classes to represent hours, wages and workers so in the end we operate on something like
-      // def hoursToWages(hours: List[Hour])(employees: List[Employee]): Either[String, List[EmployeePayment]]
-      // next, come up with a way to avoid having separate lists? is there any data structure
-      // suitable to associate employees with their working hours? refactor the code above to use this new approach
-    },
+    WageCalculatorTests,
     new Assignment {
       override def assigneeFullName: String = "Дідух Максим Андрійович"
       /*sealed*/
