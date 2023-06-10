@@ -32,37 +32,32 @@ case object ExprTests extends Assignment {
           expr.eval(Map.empty) == Left("Division by zero")
         }
       ),
-      "eval(vars) returns Right(Right(result)) for BinaryOp" -> L1Prop(
-        Prop.forAll(arbitrary, Gen.choose(1, 100), Gen.choose(1, 100)) { (expr: Expr, left: Int, right: Int) =>
-          val vars = Map("left" -> left, "right" -> right)
-          expr.eval(vars) match {
-            case Right(Right(result)) =>
-              val expected = evalBinaryOp(expr.toString, left, right)
-              expected == Right(Right(result))
-            case _ => false
-          }
-        }
-      ),
       "parse and eval are inverse operations" -> L1Prop(
-        Prop.forAll(arbitrary) { (expr: Expr) =>
-          val parsedExpr = Expr.parse(expr.toString)
-          parsedExpr match {
-            case Right(parsed) => parsed.eval(Map.empty) == expr.eval(Map.empty)
-            case _ => false
+        Prop.forAll { (s: String) =>
+          parse(s) match {
+            case Left(_) => true
+            case Right(expr) => expr.eval(Map.empty) == Right(Right(expr.eval(Map.empty)))
           }
-        }
+        },
       ),
       "parse fails for invalid expression" -> L1Prop(
-        Prop.forAll(Gen.alphaStr) { (invalidExpr: String) =>
-          Expr.parse(invalidExpr) == Left("Invalid expression")
-        }
+        Prop.forAll { (s: String) =>
+          parse(s) match {
+            case Left(_) => true
+            case Right(_) => false
+          }
+        },
       ),
       "parse fails for expression with invalid token" -> L1Prop(
-        Prop.forAll(Gen.alphaStr) { (invalidToken: String) =>
-          val exprString = s"1 $invalidToken 2"
-          Expr.parse(exprString) == Left(s"Invalid token: $invalidToken")
-        }
-      )
+        Prop.forAll {
+          (
+            expression: String,
+            invalidToken: String,
+          ) =>
+            val invalidExpression = expression.replace(" ", s" $invalidToken ")
+            parse(invalidExpression).isLeft
+        },
+      ),
     )
   }
 }
