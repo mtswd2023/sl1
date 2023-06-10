@@ -3,8 +3,8 @@ package ua.kpi.pti.fp.l1.assignment
 import org.scalacheck.Prop
 import ua.kpi.pti.fp.l1.assignment.L1PropOrTest._
 import ua.kpi.pti.fp.l1.assignment.tkalenko.NatTests
-import ua.kpi.pti.fp.l1.assignment.patsora.ExprTests
-import ua.kpi.pti.fp.l1.assignment.nedashkivska.ExprTests
+import ua.kpi.pti.fp.l1.assignment.patsora
+import ua.kpi.pti.fp.l1.assignment.nedashkivska
 import ua.kpi.pti.fp.l1.assignment.Doroshenko.TreeTests
 import ua.kpi.pti.fp.l1.assignment.lopateckiy.OptFnTests
 import ua.kpi.pti.fp.l1.assignment.herashchenko.MonoidTests
@@ -129,7 +129,7 @@ object Assignment {
       // fills list with Bs lazily until next()._2 is not None
       @unused def fromList[A](xs: List[A]): DelayedList[A] = ???
     },
-    ExprTests,
+    nedashkivska.ExprTests,
 
     new Assignment {
       override def assigneeFullName: String = "Прунчак Кирило Миколайович"
@@ -270,6 +270,6 @@ object Assignment {
       // and
       // "\u2B1C" (⬜) (or maybe just a space (" " or "\u0020"))
     },
-    ExprTests,
+    patsora.ExprTests,
   )
 }
