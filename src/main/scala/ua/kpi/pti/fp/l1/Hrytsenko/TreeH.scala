@@ -3,9 +3,9 @@ package ua.kpi.pti.fp.l1.Hrytsenko
 sealed trait Tree[+A]
 case class Leaf[+A](a: A) extends Tree[A]
 case class Branch[+A](
-                       l: Tree[A],
-                       r: Tree[A],
-                     ) extends Tree[A]
+  l: Tree[A],
+  r: Tree[A],
+) extends Tree[A]
 
 class TreeOps[+A](tree: Tree[A]) {
   def map[B](f: A => B): Tree[B] = tree match {
@@ -15,9 +15,9 @@ class TreeOps[+A](tree: Tree[A]) {
 
   def size: Int = {
     def helper(
-                t: Tree[A],
-                acc: Int,
-              ): Int = t match {
+      t: Tree[A],
+      acc: Int,
+    ): Int = t match {
       case Leaf(_) => acc + 1
       case Branch(l, r) => helper(l, acc) + helper(r, acc)
     }
@@ -32,9 +32,9 @@ class TreeOps[+A](tree: Tree[A]) {
 
   def toList: List[A] = {
     def helper(
-                t: Tree[A],
-                acc: List[A],
-              ): List[A] = t match {
+      t: Tree[A],
+      acc: List[A],
+    ): List[A] = t match {
       case Leaf(a) => a :: acc
       case Branch(l, r) => helper(l, helper(r, acc))
     }
@@ -44,9 +44,9 @@ class TreeOps[+A](tree: Tree[A]) {
 
   def limitToDepth(n: Int): Tree[A] = {
     def helper(
-                t: Tree[A],
-                depth: Int,
-              ): Tree[A] = {
+      t: Tree[A],
+      depth: Int,
+    ): Tree[A] = {
       if (depth > n) Leaf(null.asInstanceOf[A]) // або Leaf(defaultValue), якщо є значення за замовчуванням
       else t match {
         case Leaf(a) => Leaf(a)

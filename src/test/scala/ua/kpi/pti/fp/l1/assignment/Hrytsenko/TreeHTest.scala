@@ -107,9 +107,9 @@ case object TreeHTest extends Assignment {
     }
 
     def findInTree[A](
-                       tree: Tree[A],
-                       predicate: A => Boolean,
-                     ): Option[A] = tree match {
+      tree: Tree[A],
+      predicate: A => Boolean,
+    ): Option[A] = tree match {
       case Leaf(a) => Some(a).filter(predicate)
       case Branch(l, r) => findInTree(l, predicate) orElse findInTree(r, predicate)
     }
@@ -120,9 +120,9 @@ case object TreeHTest extends Assignment {
     }
 
     def limitTreeToDepth[A](
-                             tree: Tree[A],
-                             depth: Int,
-                           ): Tree[A] = {
+      tree: Tree[A],
+      depth: Int,
+    ): Tree[A] = {
       if (depth <= 0) Leaf(null.asInstanceOf[A])
       else tree match {
         case Leaf(a) => Leaf(a)
@@ -131,9 +131,9 @@ case object TreeHTest extends Assignment {
     }
 
     def mapTree[A, B](
-                       tree: Tree[A],
-                       f: A => B,
-                     ): Tree[B] = tree match {
+      tree: Tree[A],
+      f: A => B,
+    ): Tree[B] = tree match {
       case Leaf(a) => Leaf(f(a))
       case Branch(l, r) => Branch(mapTree(l, f), mapTree(r, f))
     }
