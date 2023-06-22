@@ -11,6 +11,8 @@ import ua.kpi.pti.fp.l1.assignment.herashchenko.MonoidTests
 import scala.annotation.unused
 import ua.kpi.pti.fp.l1.assignment.balatska.BstTests
 import ua.kpi.pti.fp.l1.assignment.prunchak.JsonTest
+import ua.kpi.pti.fp.l1.assignment.Hrytsenko.TreeHTest
+
 // Please put your definitions into separate packages upon implementation
 // All implementations should come up with a set of reasonable laws
 // Feel free to add any number of helper functions, convenient constructors etc etc
@@ -38,20 +40,7 @@ object Assignment {
     OptFnTests,
     MonoidTests,
     JsonTest,
-    new Assignment {
-      override def assigneeFullName: String = "Гриценко Марія Дмитрівна"
-      // implement
-      // class Tree[A] = Leaf(a:A)|Branch(l:Tree[A],r:Tree[A])
-      // sealed?
-      // tail-recursive methods
-      @unused trait Tree[A] {
-        def map[B](f: A => B): Tree[B]
-        def size(): Int
-        def find(f: A => Boolean): Option[A]
-        def toList(): List[A]
-        def limitToDepth(n: Int): Tree[A] // cuts branches deeper than n
-      }
-    },
+    TreeHTest,
     new Assignment {
       override def assigneeFullName: String = "Кіяшко Ігор Володимирович"
       // https://en.wikipedia.org/wiki/Linear_congruential_generator
