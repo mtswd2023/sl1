@@ -1,29 +1,47 @@
 package ua.kpi.pti.fp.l1.assignment.kiyashko
 
-import ua.kpi.pti.fp.l1.kiyashko.LinearCongruentialGenerator
-import org.scalacheck.{Gen, Prop}
-import ua.kpi.pti.fp.l1.assignment.L1PropOrTest._
 import ua.kpi.pti.fp.l1.assignment.{Assignment, L1PropOrTest}
+import ua.kpi.pti.fp.l1.assignment.L1PropOrTest._
+import ua.kpi.pti.fp.l1.kiyashko.RandomFunctions.{RandomType, double, int,fill, zipWith}
+import ua.kpi.pti.fp.l1.kiyashko.{LCGRandom}
 
-object LinearCongruentialGeneratorTests {
-  def main(args: Array[String]): Unit = {
-    val seed = 12345L
-    val a = 1103515245L
-    val c = 12345L
-    val m = math.pow(2, 31).toLong - 1
-    val n = 10
 
-    val sequence = LinearCongruentialGenerator.generateSequence(seed, a, c, m, n)
-    println(s"Generated sequence: $sequence")
 
-    assert(sequence.length == n, "Sequence length mismatch!")
+case object LcgTests extends Assignment {
+  override def assigneeFullName: String = "Кіяшко Ігор Володимирович"
 
-    assert(sequence.toSet.size == n, "Duplicate elements found in the sequence!")
+  val seed = 12345
 
-    val maxValue = sequence.max
-    val minValue = sequence.min
-    assert(maxValue < m && minValue >= 0, "Generated values are out of range!")
+  val random = LCGRandom(seed)
 
-    println("All tests passed!")
+  val fillTest: L1PropOrTest = L1SimpleTest.of {
+    val n = 5
+    val result = fill(random)(n)
+    println(s"result: $result")
   }
+
+  val intTest: L1PropOrTest = L1SimpleTest.of {
+    val (value, _) = int(random)
+    println(s"int: $value")
+  }
+
+  val doubleTest: L1PropOrTest = L1SimpleTest.of {
+    val (value, _) = double(random)(random)
+    println(s"double: $value")
+  }
+
+  val zipWithTest: L1PropOrTest = L1SimpleTest.of {
+    val ra: RandomType[Int] = _.next()
+    val rb: RandomType[Double] = double(random)
+    val f: (Int, Double) => String = (a, b) => s"($a, $b)"
+    val (value, _) = zipWith(ra, rb)(f)(random)
+    println(s"zipWith: $value")
+  }
+
+  override val props: List[(String, L1PropOrTest)] = List(
+    "fill test" -> fillTest,
+    "int test" -> intTest,
+    "double test" -> doubleTest,
+    "zipWith test" -> zipWithTest
+  )
 }
