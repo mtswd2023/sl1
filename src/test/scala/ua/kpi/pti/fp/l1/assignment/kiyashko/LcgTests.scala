@@ -2,8 +2,8 @@ package ua.kpi.pti.fp.l1.assignment.kiyashko
 
 import ua.kpi.pti.fp.l1.assignment.{Assignment, L1PropOrTest}
 import ua.kpi.pti.fp.l1.assignment.L1PropOrTest._
-import ua.kpi.pti.fp.l1.kiyashko.RandomFunctions.{RandomType, double, int,fill, zipWith}
 import ua.kpi.pti.fp.l1.kiyashko.{LCGRandom}
+import ua.kpi.pti.fp.l1.kiyashko.RandomFunctions
 
 
 
@@ -14,34 +14,28 @@ case object LcgTests extends Assignment {
 
   val random = LCGRandom(seed)
 
-  val fillTest: L1PropOrTest = L1SimpleTest.of {
-    val n = 5
-    val result = fill(random)(n)
-    println(s"result: $result")
+  override val props: List[(String, L1PropOrTest)] = {
+    List(
+      "fill test" -> L1SimpleTest.of {
+        val rng2 = LCGRandom(456)
+        val filledList = RandomFunctions.fill(rng2)(5)
+        assert(filledList == List(346244101, -1116184729, 1542165675, -1688264335, 1796741411))
+      },
+      "int test" -> L1SimpleTest.of {
+        val rng3 = LCGRandom(789)
+        val (intValue, _) = RandomFunctions.int(rng3)
+        assert(intValue == 2007237766)
+      },
+      "double test" -> L1SimpleTest.of {
+        val rng4 = LCGRandom(987)
+        val (doubleValue, _) = RandomFunctions.double(rng4)(random)
+        assert(doubleValue == 0.40563762981614447)
+      },
+      "zipWith test" -> L1SimpleTest.of {
+        val rng5 = LCGRandom(654)
+        val (zippedValue, _) = RandomFunctions.zipWith(RandomFunctions.int, RandomFunctions.double(random))(_ + _)(rng5)
+        assert(zippedValue == 2007237766.4056376)
+      },
+    )
   }
-
-  val intTest: L1PropOrTest = L1SimpleTest.of {
-    val (value, _) = int(random)
-    println(s"int: $value")
-  }
-
-  val doubleTest: L1PropOrTest = L1SimpleTest.of {
-    val (value, _) = double(random)(random)
-    println(s"double: $value")
-  }
-
-  val zipWithTest: L1PropOrTest = L1SimpleTest.of {
-    val ra: RandomType[Int] = _.next()
-    val rb: RandomType[Double] = double(random)
-    val f: (Int, Double) => String = (a, b) => s"($a, $b)"
-    val (value, _) = zipWith(ra, rb)(f)(random)
-    println(s"zipWith: $value")
-  }
-
-  override val props: List[(String, L1PropOrTest)] = List(
-    "fill test" -> fillTest,
-    "int test" -> intTest,
-    "double test" -> doubleTest,
-    "zipWith test" -> zipWithTest
-  )
 }
