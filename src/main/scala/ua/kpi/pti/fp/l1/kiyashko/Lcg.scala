@@ -36,13 +36,12 @@ object RandomFunctions {
 
   def zipWith[A, B, C](
     ra: RandomType[A],
-    rb: RandomType[B]
-    )(
-    f: (A, B) => C
-    ): RandomType[C] = { rng =>
+    rb: RandomType[B],
+  )(
+    f: (A, B) => C,
+  ): RandomType[C] = { rng =>
     val (valueA, nextRandomA) = ra(rng)
     val (valueB, nextRandomB) = rb(nextRandomA)
     (f(valueA, valueB), nextRandomB)
   }
 }
-
