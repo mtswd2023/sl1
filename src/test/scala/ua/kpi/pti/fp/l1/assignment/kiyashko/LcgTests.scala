@@ -16,25 +16,30 @@ case object LcgTests extends Assignment {
 
   override val props: List[(String, L1PropOrTest)] = {
     List(
-      "fill test" -> L1SimpleTest.of {
+      "LCGRandom.next() test" -> L1SimpleTest.of {
+        val rng1 = LCGRandom(123)
+        val (nextSeed1, _) = rng1.next()
+        assert(nextSeed1 == 1218640798)
+      },
+      "RandomFunctions.fill() test" -> L1SimpleTest.of {
         val rng2 = LCGRandom(456)
         val filledList = RandomFunctions.fill(rng2)(5)
-        assert(filledList == List(346244101, -1116184729, 1542165675, -1688264335, 1796741411))
+        assert(filledList == List(1772927623, -1548405190, 199741521, -1944203908, 1257097899))
       },
-      "int test" -> L1SimpleTest.of {
+      "RandomFunctions.int test" -> L1SimpleTest.of {
         val rng3 = LCGRandom(789)
         val (intValue, _) = RandomFunctions.int(rng3)
-        assert(intValue == 2007237766)
+        assert(intValue == -1967752848)
       },
-      "double test" -> L1SimpleTest.of {
+      "RandomFunctions.double test" -> L1SimpleTest.of {
         val rng4 = LCGRandom(987)
         val (doubleValue, _) = RandomFunctions.double(rng4)(random)
-        assert(doubleValue == 0.40563762981614447)
+        assert(doubleValue == -0.762835563515702)
       },
-      "zipWith test" -> L1SimpleTest.of {
+      "RandomFunctions.zipWith test" -> L1SimpleTest.of {
         val rng5 = LCGRandom(654)
         val (zippedValue, _) = RandomFunctions.zipWith(RandomFunctions.int, RandomFunctions.double(random))(_ + _)(rng5)
-        assert(zippedValue == 2007237766.4056376)
+        assert(zippedValue == 2.1025035730408053E9)
       },
     )
   }
