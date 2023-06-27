@@ -11,6 +11,7 @@ import ua.kpi.pti.fp.l1.assignment.herashchenko.MonoidTests
 import scala.annotation.unused
 import ua.kpi.pti.fp.l1.assignment.balatska.BstTests
 import ua.kpi.pti.fp.l1.assignment.prunchak.JsonTest
+import ua.kpi.pti.fp.l1.assignment.isachenko.EvalTests
 // Please put your definitions into separate packages upon implementation
 // All implementations should come up with a set of reasonable laws
 // Feel free to add any number of helper functions, convenient constructors etc etc
@@ -217,43 +218,7 @@ object Assignment {
       // suitable to associate employees with their working hours? refactor the code above to use this new approach
     },
     didukh.ExprTests,
-    new Assignment {
-      override def assigneeFullName: String = "Ісаченко Нікіта Сергійович"
-
-      // sealed?
-      @unused trait Eval[A] { // Now(a:A) | Later(a: () => A) | FlatMap(c: Compute[A], f: A => Compute[B]) | Failed(exception: Throwable)
-        def valueUnsafe(): A // throws exception
-        def value(): Either[Throwable, A] // throws exception
-
-        // tailrec or even mutable as long as does not blow up the stack
-        def flatMap[B](f: A => Eval[B]): Eval[B]
-      }
-
-      @unused object Eval {
-        def now[A](a: A): Eval[A] = ??? // Now(a)
-        def later[A](a: () => A): Eval[A] = ??? // Later(a)
-      }
-      // example:
-      // Eval.now(1).flatMap(x => Eval.later(() => x + 1)).flatMap(x => Eval.later(() => x - 100))
-
-      // following must compute:
-      @unused object MutualRecursion {
-        def even(n: Int): Eval[Boolean] =
-          Eval.now(n == 0).flatMap {
-            case true => Eval.now(true)
-            case false => odd(n - 1)
-          }
-
-        def odd(n: Int): Eval[Boolean] =
-          Eval.now(n == 0).flatMap {
-            case true => Eval.now(false)
-            case false => even(n - 1)
-          }
-      }
-
-      // should be ok to compute
-      // MutualRecursion.odd(199999).valueUnsafe()
-    },
+    EvalTests,
     new Assignment {
       override def assigneeFullName: String = "Леськів Василина Володимирівна"
       // https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
