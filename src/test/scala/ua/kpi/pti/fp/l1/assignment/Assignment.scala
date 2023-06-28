@@ -11,6 +11,7 @@ import ua.kpi.pti.fp.l1.assignment.herashchenko.MonoidTests
 import scala.annotation.unused
 import ua.kpi.pti.fp.l1.assignment.balatska.BstTests
 import ua.kpi.pti.fp.l1.assignment.prunchak.JsonTest
+import ua.kpi.pti.fp.l1.assignment.kushnir.EitherOptionTests
 // Please put your definitions into separate packages upon implementation
 // All implementations should come up with a set of reasonable laws
 // Feel free to add any number of helper functions, convenient constructors etc etc
@@ -95,25 +96,7 @@ object Assignment {
       // fills list with As lazily until next()._2 is not None
       @unused def iterate[A](zero: A)(next: A => (A, Option[A])): DelayedList[A] = ???
     },
-    new Assignment {
-      override def assigneeFullName: String = "Кушнір Влада Василівна"
-      // note how we can do
-      // Option(1).flatMap(a => Option(a + 2).filter(_ % 2 == 0)).flatMap(x => Some(x + 10)) // == None
-      // and
-      // Right(1).flatMap(a => Right(a + 2).filterOrElse(_ % 2 == 0, "Not an even number")).flatMap(x => Right(x < 123)) // Left(not an even number)
-      // but we can't do
-      // Option(1).flatMap(a => Right(a + 1)).flatMap(x => if (x > 10) Some(x + 1) else Some(x - 1))
-      // write a class that would allow nesting Option and Either
-      // and define its own methods like flatMapOption/flatMapEither/flatMap (with corresponding signatures)
-      // so that we can use Option with Either transparently
-      @unused
-      class EitherOption[L, A](@unused a: Either[L, Option[A]]) {
-        @unused def map[B](f: A => B): EitherOption[L, B] = ???
-        @unused def flatMap[B](f: A => EitherOption[L, B]): EitherOption[L, B] = ???
-        @unused def subflatMap[B](f: A => Option[B]): EitherOption[L, B] = ???
-        @unused def semiFlatMap[B](f: A => Either[L, B]): EitherOption[L, B] = ???
-      }
-    },
+    EitherOptionTests,
     new Assignment {
       override def assigneeFullName: String = "Мишинкін Богдан Сергійович"
       trait DelayedList[A] {
