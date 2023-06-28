@@ -1,3 +1,5 @@
+package ua.kpi.pti.fp.l1.schastnyi
+
 object Main {
   def main(args: Array[String]): Unit = {
     val poly = Poly("x", Map(2 -> 1, 0 -> 5))

@@ -1,5 +1,7 @@
+package ua.kpi.pti.fp.l1.assigment.schastnyi
+
 import org.junit.Assert._
-object Main {
+object PolyTest {
   def main(args: Array[String]): Unit = {
     // Тести для методу add()
     val poly1 = Poly("x", Map(2 -> 1, 0 -> 5))
