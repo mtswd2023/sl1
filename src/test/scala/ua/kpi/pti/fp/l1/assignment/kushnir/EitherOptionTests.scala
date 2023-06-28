@@ -6,24 +6,22 @@ import org.scalacheck.Properties
 import org.scalacheck.Test
 import org.scalacheck.Test.Parameters
 
-import ua.kpi.pti.fp.l1.assignment.L1PropOrTest._
-import ua.kpi.pti.fp.l1.assignment.{Assignment, L1PropOrTest}
-import ua.kpi.pti.fp.l1.lopateckiy.EitherOption
+import ua.kpi.pti.fp.l1.kushnir.EitherOption
 
-object EitherOptionTests extends Assignment {
+object EitherOptionProperties extends Properties("EitherOption") {
 
   property("map preserves the structure") = forAll { (eitherOption: EitherOption[String, Int], f: Int => Double) =>
     val mapped = eitherOption.map(f)
     eitherOption.a.isLeft == mapped.a.isLeft && eitherOption.a.forall(_.isDefined) == mapped.a.forall(_.isDefined)
   }
 
-  property("flatMapOption preserves the structure") = forAll { (eitherOption: EitherOption[String, Int], f: Int => Option[Double]) =>
-    val flatMapped = eitherOption.flatMapOption(f)
+  property("subflatMap preserves the structure") = forAll { (eitherOption: EitherOption[String, Int], f: Int => Option[Double]) =>
+    val flatMapped = eitherOption.subflatMap(f)
     eitherOption.a.isLeft == flatMapped.a.isLeft && eitherOption.a.forall(_.isDefined) == flatMapped.a.forall(_.isDefined)
   }
 
-  property("flatMapEither preserves the structure") = forAll { (eitherOption: EitherOption[String, Int], f: Int => Either[String, Double]) =>
-    val flatMapped = eitherOption.flatMapEither(f)
+  property("semiFlatMap preserves the structure") = forAll { (eitherOption: EitherOption[String, Int], f: Int => Either[String, Double]) =>
+    val flatMapped = eitherOption.semiFlatMap(f)
     eitherOption.a.isLeft == flatMapped.a.isLeft && eitherOption.a.forall(_.isDefined) == flatMapped.a.forall(_.isDefined)
   }
 
@@ -31,7 +29,9 @@ object EitherOptionTests extends Assignment {
     val flatMapped = eitherOption.flatMap(f)
     eitherOption.a.isLeft == flatMapped.a.isLeft && eitherOption.a.forall(_.isDefined) == flatMapped.a.forall(_.isDefined)
   }
+}
 
+object EitherOptionTests extends Assignment{
   val checkConfig = Parameters.default.withMinSuccessfulTests(100)
 
   val result = Test.check(checkConfig, EitherOptionProperties)
@@ -41,6 +41,6 @@ object EitherOptionTests extends Assignment {
   } else {
     println(s"Some tests failed:\n${result.status}")
   }
-}
+  
   override def assigneeFullName: String = "Кушнір Влада Василівна"
 }
