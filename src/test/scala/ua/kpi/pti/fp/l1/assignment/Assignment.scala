@@ -11,6 +11,7 @@ import ua.kpi.pti.fp.l1.assignment.herashchenko.MonoidTests
 import scala.annotation.unused
 import ua.kpi.pti.fp.l1.assignment.balatska.BstTests
 import ua.kpi.pti.fp.l1.assignment.prunchak.JsonTest
+import ua.kpi.pti.fp.l1.assignment.leskiv.LifeTests
 // Please put your definitions into separate packages upon implementation
 // All implementations should come up with a set of reasonable laws
 // Feel free to add any number of helper functions, convenient constructors etc etc
@@ -254,21 +255,7 @@ object Assignment {
       // should be ok to compute
       // MutualRecursion.odd(199999).valueUnsafe()
     },
-    new Assignment {
-      override def assigneeFullName: String = "Леськів Василина Володимирівна"
-      // https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
-      // model a finite board for Game of Life (e.g. 32x32)
-      // representing it as a set of "live" coordinates.
-      // write a function next(board: Board): Board
-      // that takes a current board and returns the next one
-      // you can skip writing property-based tests but still write normal tests
-      // (use Glider as a sample shape)
-      // please also write a function to render a board.
-      // use ascii/unicode for black/white squares, e.g.
-      // "\u2B1B" (⬛)
-      // and
-      // "\u2B1C" (⬜) (or maybe just a space (" " or "\u0020"))
-    },
+    LifeTests,
     patsora.ExprTests,
   )
 }
