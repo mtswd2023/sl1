@@ -11,6 +11,7 @@ import ua.kpi.pti.fp.l1.assignment.herashchenko.MonoidTests
 import scala.annotation.unused
 import ua.kpi.pti.fp.l1.assignment.balatska.BstTests
 import ua.kpi.pti.fp.l1.assignment.prunchak.JsonTest
+import ua.kpi.pti.fp.l1.assignment.myshynkin.DelayedListTest
 // Please put your definitions into separate packages upon implementation
 // All implementations should come up with a set of reasonable laws
 // Feel free to add any number of helper functions, convenient constructors etc etc
@@ -38,6 +39,7 @@ object Assignment {
     OptFnTests,
     MonoidTests,
     JsonTest,
+    DelayedListTest,
     new Assignment {
       override def assigneeFullName: String = "Гриценко Марія Дмитрівна"
       // implement
@@ -114,7 +116,7 @@ object Assignment {
         @unused def semiFlatMap[B](f: A => Either[L, B]): EitherOption[L, B] = ???
       }
     },
-    new Assignment {
+new Assignment {
       override def assigneeFullName: String = "Мишинкін Богдан Сергійович"
       trait DelayedList[A] {
         // Empty | DelayedCons(head: A, tail: () => DelayedList[A])
